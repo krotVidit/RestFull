@@ -2,7 +2,7 @@
 
 class Model
 {
-    public function getPosts($connect)
+    public function getPosts(mysqli $connect): string
     {
         $posts = mysqli_query($connect, '
             SELECT *
@@ -12,7 +12,7 @@ class Model
         return json_encode($posts);
     }
 
-    public function getPost($connect, $id)
+    public function getPost(mysqli $connect, int $id): string
     {
         $post = mysqli_query($connect, "
             SELECT *
@@ -29,7 +29,7 @@ class Model
         return json_encode($post);
     }
 
-    public function addPost($connect, $data)
+    public function addPost(mysqli $connect, int $data): string
     {
         $title = $data['title'];
         $body = $data['body'];
@@ -47,7 +47,7 @@ class Model
         return json_encode($result);
     }
 
-    public function updatePost($connect, $id, $data)
+    public function updatePost(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
         $body = $data['body'];
@@ -66,7 +66,7 @@ class Model
         return json_encode($result);
     }
 
-    public function updateAllPost($connect, $id, $data)
+    public function updateAllPost(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
         $body = $data['body'];
@@ -85,7 +85,7 @@ class Model
         return json_encode($result);
     }
 
-    public function deletePost($connect, $id)
+    public function deletePost(mysqli $connect, int $id): string
     {
         $delete = mysqli_query($connect, "
             DELETE FROM Posts
