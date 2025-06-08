@@ -29,7 +29,12 @@ class Model
         return json_encode($post);
     }
 
-    public function addPost(mysqli $connect, int $data): string
+    /**
+     * @param mysqli $connect
+     * @param $data
+     * @return string
+     */
+    public function addPost(mysqli $connect, $data): string
     {
         $title = $data['title'];
         $body = $data['body'];
@@ -47,6 +52,12 @@ class Model
         return json_encode($result);
     }
 
+    /**
+     * @param mysqli $connect
+     * @param int $id
+     * @param $data
+     * @return string
+     */
     public function updatePost(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
@@ -66,6 +77,12 @@ class Model
         return json_encode($result);
     }
 
+    /**
+     * @param mysqli $connect
+     * @param int $id
+     * @param $data
+     * @return string
+     */
     public function updateAllPost(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
