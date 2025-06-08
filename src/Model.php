@@ -4,10 +4,10 @@ class Model
 {
     public function getPosts($connect)
     {
-        $posts = mysqli_query($connect, "
+        $posts = mysqli_query($connect, '
             SELECT *
             FROM Posts
-            ")->fetch_all();
+            ')->fetch_all();
 
         return json_encode($posts);
     }
@@ -58,7 +58,7 @@ class Model
         ");
         $result = [
             'status' => true,
-            'post_id' => mysqli_insert_id($connect),
+            'post_id' => $id,
             'message' => 'Запись обновленна',
         ];
         http_response_code(200);
@@ -77,7 +77,7 @@ class Model
         ");
         $result = [
             'status' => true,
-            'post_id' => mysqli_insert_id($connect),
+            'post_id' => $id,
             'message' => 'Запись обновленна полностью',
         ];
         http_response_code(200);
@@ -94,7 +94,7 @@ class Model
 
         $result = [
             'status' => true,
-            'post_id' => mysqli_insert_id($connect),
+            'post_id' => $id,
             'message' => 'Запись удаленна',
         ];
         http_response_code(200);
