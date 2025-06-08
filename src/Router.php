@@ -5,7 +5,7 @@ class Router
     private $connect;
     private Model $model;
 
-    public function __construct($connect)
+    public function __construct(mysqli $connect)
     {
         $this->connect = $connect;
         $this->model = new Model;
@@ -17,7 +17,7 @@ class Router
         header('Content-Type: application/json');
     }
 
-    public function handler($method, $path): void
+    public function handler(string $method, string $path): void
     {
         $segments = explode('/', $path);
         $type = $segments[0] ?? '';
@@ -46,7 +46,7 @@ class Router
         }
     }
 
-    private function handleGet($type, $id): void
+    private function handleGet(string $type, int $id): void
     {
         if ($type === 'posts') {
             echo $this->model->getPosts($this->connect);
@@ -58,7 +58,7 @@ class Router
         }
     }
 
-    private function handlePost($type): void
+    private function handlePost(string $type): void
     {
 
         if ($type === 'post') {
@@ -69,7 +69,7 @@ class Router
         }
     }
 
-    private function handlePatch($type, $id): void
+    private function handlePatch(string $type, int $id): void
     {
         if ($type === 'post') {
             $data = file_get_contents('php://input');
@@ -81,7 +81,7 @@ class Router
         }
     }
 
-    private function handlePut($type, $id): void
+    private function handlePut(string $type, int $id): void
     {
         if ($type === 'post') {
             $data = file_get_contents('php://input');
@@ -93,7 +93,7 @@ class Router
         }
     }
 
-    private function handleDelete($type, $id): void
+    private function handleDelete(string $type, int $id): void
     {
         if ($type === 'post') {
             echo $this->model->deletePost($this->connect, $id);
