@@ -4,9 +4,10 @@ class Model
 {
     public function getPosts($connect)
     {
-        $posts = mysqli_query($connect, '
+        $posts = mysqli_query($connect, "
             SELECT *
-            FROM Posts')->fetch_all();
+            FROM Posts
+            ")->fetch_all();
 
         return json_encode($posts);
     }
