@@ -46,7 +46,7 @@ class Router
         }
     }
 
-    private function handleGet(string $type, int $id): void
+    private function handleGet(string $type, ?int $id = null): void
     {
         if ($type === 'posts') {
             echo $this->model->getPosts($this->connect);
