@@ -4,10 +4,19 @@ class Model
 {
     public function getPosts(mysqli $connect): string
     {
-        $posts = mysqli_query($connect, '
+        $stmt = $connect->prepare('
             SELECT *
             FROM Posts
-            ')->fetch_all();
+            ');
+        if (! $stmt) {
+            http_response_code(500);
+
+            return json_encode(['error' => 'Ошибка получение постов']);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $posts = $result->fetch_all(MYSQLI_ASSOC);
 
         return json_encode($posts);
     }
@@ -29,11 +38,6 @@ class Model
         return json_encode($post);
     }
 
-    /**
-     * @param mysqli $connect
-     * @param $data
-     * @return string
-     */
     public function addPost(mysqli $connect, $data): string
     {
         $title = $data['title'];
@@ -52,12 +56,6 @@ class Model
         return json_encode($result);
     }
 
-    /**
-     * @param mysqli $connect
-     * @param int $id
-     * @param $data
-     * @return string
-     */
     public function updatePost(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
@@ -77,12 +75,6 @@ class Model
         return json_encode($result);
     }
 
-    /**
-     * @param mysqli $connect
-     * @param int $id
-     * @param $data
-     * @return string
-     */
     public function updateAllPost(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
