@@ -23,21 +23,31 @@ class Model
 
     public function getPost(mysqli $connect, int $id): string
     {
-        $post = mysqli_query($connect, "
+        $stmt = $connect->prepare('
             SELECT *
             FROM Posts
-            WHERE id = '{$id}'
-        ")->fetch_all();
+            WHERE id = ?
+        ');
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
 
-        if (empty($post)) {
+        $result = $stmt->get_result();
+        $post = $result->fetch_assoc();
+
+        if (!$post) {
             http_response_code(400);
 
-            return json_encode(['error' => 'Поста по данному id - не найденно']);
+            return json_encode(['error' => 'Пост с данным id не найден']);
         }
 
         return json_encode($post);
     }
 
+    /**
+     * @param mysqli $connect
+     * @param $data
+     * @return string
+     */
     public function addPost(mysqli $connect, $data): string
     {
         $title = $data['title'];
@@ -56,6 +66,12 @@ class Model
         return json_encode($result);
     }
 
+    /**
+     * @param mysqli $connect
+     * @param int $id
+     * @param $data
+     * @return string
+     */
     public function updatePost(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
@@ -75,6 +91,12 @@ class Model
         return json_encode($result);
     }
 
+    /**
+     * @param mysqli $connect
+     * @param int $id
+     * @param $data
+     * @return string
+     */
     public function updateAllPost(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
