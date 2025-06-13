@@ -85,19 +85,27 @@ class Model
     {
         $title = $data['title'];
         $body = $data['body'];
-        $update = mysqli_query($connect, "
+
+        $stmt = $connect->prepare('
             UPDATE Posts
-            SET title = '{$title}', body ='{$body}'
-            WHERE id ='{$id}'
-        ");
-        $result = [
+            SET title = ?, body = ?
+            WHERE id = ?
+            ');
+        $stmt->bind_param('ssi', $title, $body, $id);
+        if (! $stmt->execute()) {
+            http_response_code(500);
+            return json_encode([
+                'status' => false,
+                'error' => 'Ошибка обновления записи',
+            ]);
+        }
+
+        http_response_code(200);
+        return json_encode([
             'status' => true,
             'post_id' => $id,
             'message' => 'Запись обновленна',
-        ];
-        http_response_code(200);
-
-        return json_encode($result);
+        ]);
     }
 
     /**
@@ -110,35 +118,51 @@ class Model
     {
         $title = $data['title'];
         $body = $data['body'];
-        $update = mysqli_query($connect, "
+
+        $stmt = $connect->prepare('
             UPDATE Posts
-            SET title = '{$title}', body ='{$body}'
-            WHERE id ='{$id}'
-        ");
-        $result = [
+            SET title = ?, body = ?
+            WHERE id = ?
+        ');
+        $stmt->bind_param('ssi', $title, $body, $id);
+
+        if (! $stmt->execute()) {
+            http_response_code(500);
+            json_encode([
+                'status' => false,
+                'error' => 'Запись не обновлена',
+            ]);
+        }
+
+        http_response_code(200);
+        return json_encode([
             'status' => true,
             'post_id' => $id,
             'message' => 'Запись обновленна полностью',
-        ];
-        http_response_code(200);
-
-        return json_encode($result);
+        ]);
     }
 
     public function deletePost(mysqli $connect, int $id): string
     {
-        $delete = mysqli_query($connect, "
+        $stmt = $connect->prepare('
             DELETE FROM Posts
-            WHERE id = '{$id}'
-        ");
+            WHERE id = ?
+        ');
+        $stmt->bind_param('i', $id);
 
-        $result = [
+        if (! $stmt->execute()) {
+            http_response_code(500);
+            return json_encode([
+                'status' => false,
+                'error' => 'Ошибка удаление записи',
+            ]);
+        }
+
+        http_response_code(200);
+        return json_encode([
             'status' => true,
             'post_id' => $id,
             'message' => 'Запись удаленна',
-        ];
-        http_response_code(200);
-
-        return json_encode($result);
+        ]);
     }
 }
