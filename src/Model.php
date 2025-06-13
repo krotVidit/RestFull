@@ -34,7 +34,7 @@ class Model
         $result = $stmt->get_result();
         $post = $result->fetch_assoc();
 
-        if (!$post) {
+        if (! $post) {
             http_response_code(400);
 
             return json_encode(['error' => 'Пост с данным id не найден']);
@@ -52,18 +52,27 @@ class Model
     {
         $title = $data['title'];
         $body = $data['body'];
-        $add = mysqli_query($connect, "
-            INSERT INTO Posts (id, title, body)
-            VALUE (NULL,'{$title}','{$body}')
-            ");
-        $result = [
+
+        $stmt = $connect->prepare('
+            INSERT INTO Posts (title, body)
+            VALUE (?, ?)
+        ');
+        $stmt->bind_param('ss', $title, $body);
+
+        if (! $stmt->execute()) {
+            http_response_code(500);
+            return json_encode([
+                'status' => false,
+                'error' => ' Ошибка добавления поста',
+            ]);
+        }
+
+        http_response_code(201);
+        return json_encode([
             'status' => true,
             'post_id' => mysqli_insert_id($connect),
             'message' => 'Запись добавлена',
-        ];
-        http_response_code(201);
-
-        return json_encode($result);
+        ]);
     }
 
     /**
