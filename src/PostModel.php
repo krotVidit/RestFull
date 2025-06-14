@@ -1,8 +1,8 @@
 <?php
-
-class Model
+require ('Interface/interfaceModel.php');
+class PostModel implements InterfaceModel
 {
-    public function getPosts(mysqli $connect): string
+    public function getAll(mysqli $connect): string
     {
         $stmt = $connect->prepare('
             SELECT *
@@ -21,7 +21,7 @@ class Model
         return json_encode($posts);
     }
 
-    public function getPost(mysqli $connect, int $id): string
+    public function get(mysqli $connect, int $id): string
     {
         $stmt = $connect->prepare('
             SELECT *
@@ -43,12 +43,7 @@ class Model
         return json_encode($post);
     }
 
-    /**
-     * @param mysqli $connect
-     * @param $data
-     * @return string
-     */
-    public function addPost(mysqli $connect, $data): string
+    public function add(mysqli $connect, $data): string
     {
         $title = $data['title'];
         $body = $data['body'];
@@ -75,13 +70,7 @@ class Model
         ]);
     }
 
-    /**
-     * @param mysqli $connect
-     * @param int $id
-     * @param $data
-     * @return string
-     */
-    public function updatePost(mysqli $connect, int $id, $data): string
+    public function patch(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
         $body = $data['body'];
@@ -108,13 +97,7 @@ class Model
         ]);
     }
 
-    /**
-     * @param mysqli $connect
-     * @param int $id
-     * @param $data
-     * @return string
-     */
-    public function updateAllPost(mysqli $connect, int $id, $data): string
+    public function put(mysqli $connect, int $id, $data): string
     {
         $title = $data['title'];
         $body = $data['body'];
@@ -128,7 +111,7 @@ class Model
 
         if (! $stmt->execute()) {
             http_response_code(500);
-            json_encode([
+            return json_encode([
                 'status' => false,
                 'error' => 'Запись не обновлена',
             ]);
@@ -142,7 +125,7 @@ class Model
         ]);
     }
 
-    public function deletePost(mysqli $connect, int $id): string
+    public function delete(mysqli $connect, int $id): string
     {
         $stmt = $connect->prepare('
             DELETE FROM Posts

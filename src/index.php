@@ -5,7 +5,7 @@
 global $connect;
 
 require 'connect.php';
-require 'Model.php';
+require 'PostModel.php';
 require 'Router.php';
 
 
