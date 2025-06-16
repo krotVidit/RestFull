@@ -5,9 +5,8 @@
 global $connect;
 
 require 'connect.php';
-require 'PostModel.php';
-require 'Router.php';
-
+require('Post/Model.php');
+require ('Post/Router.php');
 
 $path = isset($_GET['q']) ? ltrim($_GET['q'], '/') : '';
 $router = new Router($connect);

@@ -1,20 +1,16 @@
 <?php
 
-class Router
+require '../Core/AbstractRouter.php';
+class Router extends AbstractRouter
 {
-    private $connect;
-    private PostModel $model;
+    protected mysqli $connect;
+
+    private Model $model;
 
     public function __construct(mysqli $connect)
     {
-        $this->connect = $connect;
-        $this->model = new PostModel();
-
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers: *');
-        header('Access-Control-Allow-Methods: *');
-        header('Access-Control-Allow-Credentials: true');
-        header('Content-Type: application/json');
+        parent::__construct($connect);
+        $this->model = new Model;
     }
 
     public function handler(string $method, string $path): void
@@ -46,7 +42,7 @@ class Router
         }
     }
 
-    private function handleGet(string $type, ?int $id = null): void
+    protected function handleGet(string $type, ?int $id = null): void
     {
         if ($type === 'posts') {
             echo $this->model->getAll($this->connect);
@@ -58,7 +54,7 @@ class Router
         }
     }
 
-    private function handlePost(string $type): void
+    protected function handlePost(string $type): void
     {
 
         if ($type === 'post') {
@@ -69,7 +65,7 @@ class Router
         }
     }
 
-    private function handlePatch(string $type, int $id): void
+    protected function handlePatch(string $type, int $id): void
     {
         if ($type === 'post') {
             $data = file_get_contents('php://input');
@@ -81,7 +77,7 @@ class Router
         }
     }
 
-    private function handlePut(string $type, int $id): void
+    protected function handlePut(string $type, int $id): void
     {
         if ($type === 'post') {
             $data = file_get_contents('php://input');
@@ -93,7 +89,7 @@ class Router
         }
     }
 
-    private function handleDelete(string $type, int $id): void
+    protected function handleDelete(string $type, int $id): void
     {
         if ($type === 'post') {
             echo $this->model->delete($this->connect, $id);

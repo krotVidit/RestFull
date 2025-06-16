@@ -1,6 +1,8 @@
 <?php
-require ('Interface/interfaceModel.php');
-class PostModel implements InterfaceModel
+
+require '../Core/AbstractModel.php';
+
+class Model extends AbstractModel
 {
     public function getAll(mysqli $connect): string
     {
@@ -56,6 +58,7 @@ class PostModel implements InterfaceModel
 
         if (! $stmt->execute()) {
             http_response_code(500);
+
             return json_encode([
                 'status' => false,
                 'error' => ' Ошибка добавления поста',
@@ -63,6 +66,7 @@ class PostModel implements InterfaceModel
         }
 
         http_response_code(201);
+
         return json_encode([
             'status' => true,
             'post_id' => mysqli_insert_id($connect),
@@ -83,6 +87,7 @@ class PostModel implements InterfaceModel
         $stmt->bind_param('ssi', $title, $body, $id);
         if (! $stmt->execute()) {
             http_response_code(500);
+
             return json_encode([
                 'status' => false,
                 'error' => 'Ошибка обновления записи',
@@ -90,6 +95,7 @@ class PostModel implements InterfaceModel
         }
 
         http_response_code(200);
+
         return json_encode([
             'status' => true,
             'post_id' => $id,
@@ -111,6 +117,7 @@ class PostModel implements InterfaceModel
 
         if (! $stmt->execute()) {
             http_response_code(500);
+
             return json_encode([
                 'status' => false,
                 'error' => 'Запись не обновлена',
@@ -118,6 +125,7 @@ class PostModel implements InterfaceModel
         }
 
         http_response_code(200);
+
         return json_encode([
             'status' => true,
             'post_id' => $id,
@@ -135,6 +143,7 @@ class PostModel implements InterfaceModel
 
         if (! $stmt->execute()) {
             http_response_code(500);
+
             return json_encode([
                 'status' => false,
                 'error' => 'Ошибка удаление записи',
@@ -142,6 +151,7 @@ class PostModel implements InterfaceModel
         }
 
         http_response_code(200);
+
         return json_encode([
             'status' => true,
             'post_id' => $id,

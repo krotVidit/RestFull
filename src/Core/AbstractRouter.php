@@ -1,6 +1,6 @@
 <?php
 
-abstract class AbstractClass {
+abstract class AbstractRouter {
   
   protected mysqli $connect;
 
@@ -19,11 +19,9 @@ abstract class AbstractClass {
         header('Content-Type: application/json');
   }
 
-  abstract public function getHandler (string $method, string $path);
-
   abstract protected function handler (string $method, string $path);
 
-  abstract protected function handleGet (string $type, int $id);
+  abstract protected function handleGet (string $type, ?int $id = null);
 
   abstract protected function handlePost (string $type);
 
