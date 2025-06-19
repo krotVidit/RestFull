@@ -1,5 +1,9 @@
 <?php
 
+namespace App;
+
+use mysqli;
+
 $host = 'mariadb';
 $user = 'root';
 $password = '2705';

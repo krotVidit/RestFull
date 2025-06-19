@@ -1,12 +1,15 @@
 <?php
 
+namespace App;
+
+require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/connect.php';
 /* $response = file_get_contents('https://jsonplaceholder.typicode.com/posts'); */
 /* $posts = json_decode($response, true); */
-global $connect;
 
-require 'connect.php';
-require('Post/Model.php');
-require ('Post/Router.php');
+use App\Post\Router;
+
+global $connect;
 
 $path = isset($_GET['q']) ? ltrim($_GET['q'], '/') : '';
 $router = new Router($connect);

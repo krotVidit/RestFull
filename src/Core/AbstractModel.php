@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Core;
+
+use mysqli;
+
 abstract class AbstractModel
 {
   abstract protected function getAll(mysqli $connect);

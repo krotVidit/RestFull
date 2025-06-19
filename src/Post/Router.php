@@ -1,6 +1,10 @@
 <?php
 
-require '../Core/AbstractRouter.php';
+namespace App\Post;
+
+use App\Core\AbstractRouter;
+use mysqli;
+
 class Router extends AbstractRouter
 {
     protected mysqli $connect;

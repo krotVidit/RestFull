@@ -1,6 +1,9 @@
 <?php
 
-require '../Core/AbstractModel.php';
+namespace App\Post;
+
+use App\Core\AbstractModel;
+use mysqli;
 
 class Model extends AbstractModel
 {
