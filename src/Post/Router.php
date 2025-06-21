@@ -77,7 +77,7 @@ class Router extends AbstractRouter
             echo $this->model->patch($this->connect, $id, $dataJSON);
         } else {
             http_response_code(500);
-            echo json_encode(['error' => 'Запись не обнавлена']);
+            echo json_encode(['error' => 'Запись не обновлена']);
         }
     }
 
@@ -89,7 +89,7 @@ class Router extends AbstractRouter
             echo $this->model->put($this->connect, $id, $dataJSON);
         } else {
             http_response_code(500);
-            echo json_encode(['error' => 'Запись не обнавлена']);
+            echo json_encode(['error' => 'Запись не обновлена']);
         }
     }
 
