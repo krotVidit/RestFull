@@ -14,7 +14,7 @@ class Router extends AbstractRouter
     public function __construct(mysqli $connect)
     {
         parent::__construct($connect);
-        $this->model = new Model;
+        $this->model = new Model($connect);
     }
 
     public function handler(string $method, string $path): void
@@ -49,9 +49,9 @@ class Router extends AbstractRouter
     protected function handleGet(string $type, ?int $id = null): void
     {
         if ($type === 'posts') {
-            echo $this->model->getAll($this->connect);
+            echo $this->model->getAll();
         } elseif ($type === 'post') {
-            echo $this->model->get($this->connect, $id);
+            echo $this->model->get($id);
         } else {
             http_response_code(404);
             echo json_encode(['error' => 'Страница не найдена']);
@@ -62,7 +62,7 @@ class Router extends AbstractRouter
     {
 
         if ($type === 'post') {
-            echo $this->model->add($this->connect, $_POST);
+            echo $this->model->add($_POST);
         } else {
             http_response_code(500);
             echo json_encode(['error' => 'Запись не добавлена']);
@@ -74,7 +74,7 @@ class Router extends AbstractRouter
         if ($type === 'post') {
             $data = file_get_contents('php://input');
             $dataJSON = json_decode($data, true);
-            echo $this->model->patch($this->connect, $id, $dataJSON);
+            echo $this->model->patch($id, $dataJSON);
         } else {
             http_response_code(500);
             echo json_encode(['error' => 'Запись не обновлена']);
@@ -86,7 +86,7 @@ class Router extends AbstractRouter
         if ($type === 'post') {
             $data = file_get_contents('php://input');
             $dataJSON = json_decode($data, true);
-            echo $this->model->put($this->connect, $id, $dataJSON);
+            echo $this->model->put($id, $dataJSON);
         } else {
             http_response_code(500);
             echo json_encode(['error' => 'Запись не обновлена']);
@@ -96,7 +96,7 @@ class Router extends AbstractRouter
     protected function handleDelete(string $type, int $id): void
     {
         if ($type === 'post') {
-            echo $this->model->delete($this->connect, $id);
+            echo $this->model->delete($id);
         } else {
             http_response_code(400);
             echo json_encode(['error' => 'Запись не удалена']);

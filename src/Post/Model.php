@@ -7,9 +7,16 @@ use mysqli;
 
 class Model extends AbstractModel
 {
-    public function getAll(mysqli $connect): string
+    private mysqli $connect;
+
+    public function __construct(mysqli $connect)
     {
-        $stmt = $connect->prepare('
+        $this->connect = $connect;
+    }
+
+    public function getAll(): string
+    {
+        $stmt = $this->connect->prepare('
             SELECT *
             FROM Posts
             ');
@@ -26,9 +33,9 @@ class Model extends AbstractModel
         return json_encode($posts);
     }
 
-    public function get(mysqli $connect, int $id): string
+    public function get(int $id): string
     {
-        $stmt = $connect->prepare('
+        $stmt = $this->connect->prepare('
             SELECT *
             FROM Posts
             WHERE id = ?
@@ -48,12 +55,12 @@ class Model extends AbstractModel
         return json_encode($post);
     }
 
-    public function add(mysqli $connect, $data): string
+    public function add($data): string
     {
         $title = $data['title'];
         $body = $data['body'];
 
-        $stmt = $connect->prepare('
+        $stmt = $this->connect->prepare('
             INSERT INTO Posts (title, body)
             VALUE (?, ?)
         ');
@@ -72,17 +79,17 @@ class Model extends AbstractModel
 
         return json_encode([
             'status' => true,
-            'post_id' => mysqli_insert_id($connect),
+            'post_id' => mysqli_insert_id($this->connect),
             'message' => 'Запись добавлена',
         ]);
     }
 
-    public function patch(mysqli $connect, int $id, $data): string
+    public function patch(int $id, $data): string
     {
         $title = $data['title'];
         $body = $data['body'];
 
-        $stmt = $connect->prepare('
+        $stmt = $this->connect->prepare('
             UPDATE Posts
             SET title = ?, body = ?
             WHERE id = ?
@@ -106,12 +113,12 @@ class Model extends AbstractModel
         ]);
     }
 
-    public function put(mysqli $connect, int $id, $data): string
+    public function put(int $id, $data): string
     {
         $title = $data['title'];
         $body = $data['body'];
 
-        $stmt = $connect->prepare('
+        $stmt = $this->connect->prepare('
             UPDATE Posts
             SET title = ?, body = ?
             WHERE id = ?
@@ -136,9 +143,9 @@ class Model extends AbstractModel
         ]);
     }
 
-    public function delete(mysqli $connect, int $id): string
+    public function delete(int $id): string
     {
-        $stmt = $connect->prepare('
+        $stmt = $this->connect->prepare('
             DELETE FROM Posts
             WHERE id = ?
         ');
