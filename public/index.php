@@ -2,8 +2,8 @@
 
 namespace App;
 
-require __DIR__ . '/vendor/autoload.php';
-require __DIR__ . '/connect.php';
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../src/connect.php';
 
 use App\Post\Router;
 
