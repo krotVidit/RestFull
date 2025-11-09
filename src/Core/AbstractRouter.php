@@ -33,5 +33,5 @@ abstract class AbstractRouter
 
   abstract protected function handlePut(string $type, int $id);
 
-  abstract protected function handleDelete(string $int, int $id);
+  abstract protected function handleDelete(string $type, int $id);
 }
