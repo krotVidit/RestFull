@@ -4,10 +4,10 @@ namespace App;
 
 use mysqli;
 
-$host = 'mariadb';
-$user = 'root';
-$password = '2705';
-$dbname = 'API';
+$host = getenv('DB_HOST');
+$user = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+$dbname = getenv('DB_NAME');
 
 $connect = new mysqli($host, $user, $password, $dbname);
 
